@@ -92,14 +92,13 @@ func (p lockfile) Unlock() error {
 	pid, err := p.Get()
 	if err != nil {
 		return nil
-	} else {
-		ok, err := isRunning(pid)
-		if err != nil {
-			return nil
-		}
-		if !ok {
-			return nil
-		}
+	}
+	ok, err := isRunning(pid)
+	if err != nil {
+		return nil
+	}
+	if !ok {
+		return nil
 	}
 
 	mpid := os.Getpid()
