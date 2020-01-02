@@ -57,7 +57,7 @@ func (p lockfile) Get() (int, error) {
 
 	d, err := ioutil.ReadFile(lockfile)
 	if err != nil {
-		return 0, fmt.Errorf("error read lockfile %s: %s", lockfile, err.Error())
+		return 0, err
 	}
 
 	pid, err := strconv.Atoi(string(bytes.TrimSpace(d)))

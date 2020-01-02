@@ -9,7 +9,7 @@ var lockfileName = "test.pid"
 func TestLockfile(t *testing.T) {
 	l, err := NewLockfile(lockfileName)
 	if err != nil {
-		t.Fatal(l)
+		t.Fatal(err)
 	}
 	_, err = l.Get()
 	if err == nil {
@@ -17,7 +17,7 @@ func TestLockfile(t *testing.T) {
 	}
 	err = l.Lock()
 	if err != nil {
-		t.Fatal(l)
+		t.Fatal(err)
 	}
 	err = l.Lock()
 	if err == nil {
@@ -25,10 +25,10 @@ func TestLockfile(t *testing.T) {
 	}
 	_, err = l.Get()
 	if err != nil {
-		t.Fatal(l)
+		t.Fatal(err)
 	}
 	err = l.Unlock()
 	if err != nil {
-		t.Fatal(l)
+		t.Fatal(err)
 	}
 }
