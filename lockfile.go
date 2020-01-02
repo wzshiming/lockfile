@@ -42,7 +42,7 @@ func (p lockfile) put() error {
 
 	err = ioutil.WriteFile(lockfile, []byte(strconv.Itoa(pid)), os.FileMode(0755))
 	if err != nil {
-		return fmt.Errorf("error write lockfile %s: %w", lockfile, err)
+		return fmt.Errorf("error write lockfile %s: %s", lockfile, err.Error())
 	}
 
 	return nil
@@ -57,12 +57,12 @@ func (p lockfile) Get() (int, error) {
 
 	d, err := ioutil.ReadFile(lockfile)
 	if err != nil {
-		return 0, err
+		return 0, fmt.Errorf("error read lockfile %s: %s", lockfile, err.Error())
 	}
 
 	pid, err := strconv.Atoi(string(bytes.TrimSpace(d)))
 	if err != nil {
-		return 0, fmt.Errorf("error read lockfile %s: %w", lockfile, err)
+		return 0, fmt.Errorf("error read lockfile %s: %s", lockfile, err.Error())
 	}
 
 	return pid, nil
