@@ -76,6 +76,10 @@ func (p lockfile) Lock() error {
 			return err
 		}
 	} else {
+		mpid := os.Getpid()
+		if mpid == pid {
+			return nil
+		}
 		ok, err := isRunning(pid)
 		if err != nil {
 			return err
