@@ -10,25 +10,25 @@ import (
 	"strconv"
 )
 
-// lockfile is a lock file
-type lockfile string
+// Lockfile is a lock file
+type Lockfile string
 
 var (
-	errNotExist  = errors.New("error lockfile not exist")
+	errNotExist  = errors.New("error Lockfile not exist")
 	errIsRunning = errors.New("error is running")
 )
 
-// NewLockfile returns a new lockfile.
-func NewLockfile(path string) (lockfile, error) {
+// NewLockfile returns a new Lockfile.
+func NewLockfile(path string) (Lockfile, error) {
 	path, err := filepath.Abs(path)
 	if err != nil {
 		return "", err
 	}
-	return lockfile(path), nil
+	return Lockfile(path), nil
 }
 
-// put the pid to lockfile.
-func (p lockfile) put() error {
+// put the pid to Lockfile.
+func (p Lockfile) put() error {
 	lockfile := string(p)
 	if p == "" {
 		return errNotExist
@@ -42,14 +42,14 @@ func (p lockfile) put() error {
 
 	err = ioutil.WriteFile(lockfile, []byte(strconv.Itoa(pid)), os.FileMode(0755))
 	if err != nil {
-		return fmt.Errorf("error write lockfile %s: %s", lockfile, err.Error())
+		return fmt.Errorf("error write Lockfile %s: %s", lockfile, err.Error())
 	}
 
 	return nil
 }
 
-// Get the pid from the lockfile.
-func (p lockfile) Get() (int, error) {
+// Get the pid from the Lockfile.
+func (p Lockfile) Get() (int, error) {
 	lockfile := string(p)
 	if lockfile == "" {
 		return 0, errNotExist
@@ -62,14 +62,14 @@ func (p lockfile) Get() (int, error) {
 
 	pid, err := strconv.Atoi(string(bytes.TrimSpace(d)))
 	if err != nil {
-		return 0, fmt.Errorf("error read lockfile %s: %s", lockfile, err.Error())
+		return 0, fmt.Errorf("error read Lockfile %s: %s", lockfile, err.Error())
 	}
 
 	return pid, nil
 }
 
-// Lock the lockfile.
-func (p lockfile) Lock() error {
+// Lock the Lockfile.
+func (p Lockfile) Lock() error {
 	pid, err := p.Get()
 	if err != nil {
 		if !os.IsNotExist(err) {
@@ -91,8 +91,8 @@ func (p lockfile) Lock() error {
 	return p.put()
 }
 
-// Unlock the lockfile.
-func (p lockfile) Unlock() error {
+// Unlock the Lockfile.
+func (p Lockfile) Unlock() error {
 	pid, err := p.Get()
 	if err != nil {
 		return nil
