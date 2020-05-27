@@ -4,7 +4,7 @@ import (
 	"testing"
 )
 
-var lockfileName = "test.pid"
+var lockfileName = "pid/test.pid"
 
 func TestLockfile(t *testing.T) {
 	l, err := NewLockfile(lockfileName)
@@ -20,8 +20,8 @@ func TestLockfile(t *testing.T) {
 		t.Fatal(err)
 	}
 	err = l.Lock()
-	if err == nil {
-		t.Fatal(l)
+	if err != nil {
+		t.Fatal(err)
 	}
 	_, err = l.Get()
 	if err != nil {
